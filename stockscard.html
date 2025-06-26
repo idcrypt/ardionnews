@@ -1,0 +1,181 @@
+<style>
+/* GENERAL STYLES */
+.carousel-wrapper {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: max-content;
+}
+.carousel-slide {
+  width: 200px;
+  flex: 0 0 auto;
+  margin: 0 5px;
+  border-radius: 10px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-family: sans-serif;
+  text-align: center;
+}
+.carousel-slide .image-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #eaeaea;
+  overflow: hidden;
+}
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.carousel-caption {
+  padding: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  z-index: 1;
+}
+#arrow-left-stocks {
+  left: 5px;
+}
+#arrow-right-stocks {
+  right: 5px;
+}
+
+</style>
+
+<div id="stocks-news-section" style="display: none;">
+  <h3 style="margin:10px 0;">
+  <a href="https://www.idcrypt.xyz/search/label/stocks" style="color:#fff; font-family:sans-serif; text-decoration:none;">
+    Stocks News
+  </a>
+</h3>
+
+  <div class="carousel-wrapper" id="stocks-carousel-wrapper">
+    <button class="carousel-arrow" id="arrow-left-stocks">&#10094;</button>
+    <div class="carousel" id="stocks-carousel">Loading Stocks News...</div>
+    <button class="carousel-arrow" id="arrow-right-stocks">&#10095;</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const url = window.location.href.toLowerCase();
+  const isHomePage = location.hostname.includes('idcrypt.xyz') && (location.pathname === '/' || location.pathname === '/index.html');
+  if (!isHomePage) return;
+
+  function initCarousel(labelFeed, labelId, delay) {
+    const section = document.getElementById(`${labelId}-news-section`);
+    const wrapper = document.getElementById(`${labelId}-carousel-wrapper`);
+    const container = document.getElementById(`${labelId}-carousel`);
+    const leftArrow = document.getElementById(`arrow-left-${labelId}`);
+    const rightArrow = document.getElementById(`arrow-right-${labelId}`);
+
+    section.style.display = "block";
+
+    let currentIndex = 0;
+    let totalSlides = 0;
+    let autoScroll;
+
+    function visibleSlides() {
+      return Math.floor(wrapper.offsetWidth / 210);
+    }
+
+    function updateCarouselPosition() {
+      const offset = -currentIndex * 210;
+      container.style.transform = `translateX(${offset}px)`;
+    }
+
+    function moveLeft() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarouselPosition();
+      }
+    }
+
+    function moveRight() {
+      if (currentIndex < totalSlides - visibleSlides()) {
+        currentIndex++;
+        updateCarouselPosition();
+      }
+    }
+
+    function startAutoScroll() {
+      autoScroll = setInterval(() => {
+        if (currentIndex < totalSlides - visibleSlides()) {
+          currentIndex++;
+        } else {
+          currentIndex = 0;
+        }
+        updateCarouselPosition();
+      }, delay);
+    }
+
+    function stopAutoScroll() {
+      clearInterval(autoScroll);
+    }
+
+    leftArrow.onclick = () => { moveLeft(); stopAutoScroll(); };
+    rightArrow.onclick = () => { moveRight(); stopAutoScroll(); };
+
+    fetch(`https://www.idcrypt.xyz/feeds/posts/default/-/${encodeURIComponent(labelFeed)}?alt=json&max-results=10`)
+      .then(res => res.json())
+      .then(data => {
+        const entries = data.feed.entry || [];
+        totalSlides = entries.length;
+        container.innerHTML = "";
+
+        entries.forEach(entry => {
+          const title = entry.title.$t;
+          const link = entry.link.find(l => l.rel === "alternate").href;
+          const content = entry.content.$t;
+          const tempDiv = document.createElement("div");
+          tempDiv.innerHTML = content;
+          const img = tempDiv.querySelector("img");
+          const imgSrc = img ? img.src : "https://via.placeholder.com/200?text=No+Image";
+
+          const slide = document.createElement("div");
+          slide.className = "carousel-slide";
+          slide.innerHTML = `
+            <a href="${link}" target="_blank" rel="noopener noreferrer">
+              <div class="image-wrapper">
+                <img src="${imgSrc}" alt="${title}">
+              </div>
+              <div class="carousel-caption">${title}</div>
+            </a>
+          `;
+          container.appendChild(slide);
+        });
+
+        if (entries.length > 0) startAutoScroll();
+        else container.innerHTML = `<p>No News ${labelId}.</p>`;
+      })
+      .catch(err => {
+        container.innerHTML = `<p>Failed ${labelId}.</p>`;
+        console.error(err);
+      });
+  }
+
+  initCarousel("stocks", "stocks", 5000);
+})();
+</script>
+
