@@ -1,0 +1,35 @@
+<!-- Pi2Day Countdown Widget -->
+<div id="pi2day-countdown" style="font-family:'Share Tech Mono', monospace; background:#0d1117; color:#00ffe7; border:2px solid #00ffe7; border-radius:12px; padding:20px; max-width:400px; margin:20px auto; text-align:center; box-shadow:0 0 20px #00ffe7;">
+  <h2 style="margin-bottom:10px;">⏳ Countdown to Pi2Day 2025</h2>
+  <div style="font-size:1.8em;" id="timer">
+    Loading...
+  </div>
+  <p style="margin-top:10px; font-size:0.9em; color:#ccc;">June 28, 2025 | Celebrating Pi × 2 = 6.28</p>
+</div>
+
+<!-- Countdown Script -->
+<script>
+  function updateCountdown() {
+    const eventDate = new Date("June 28, 2025 00:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = eventDate - now;
+
+    if (distance < 0) {
+      document.getElementById("timer").innerHTML = "🎉 It's Pi2Day!";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hrs = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML = `${days}d ${hrs}h ${mins}m ${secs}s`;
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+</script>
+
+<!-- Font for cyber look -->
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&amp;display=swap" rel="stylesheet" />
