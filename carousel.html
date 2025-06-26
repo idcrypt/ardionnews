@@ -1,0 +1,137 @@
+<div class="ard-feed-wrapper">
+  <div class="ard-feed-title">📰 Latest ARD Posts</div>
+  <div id="ard-carousel" class="ard-carousel">
+    <ul id="ard-list" class="ard-list"></ul>
+  </div>
+</div>
+
+<style>
+  .ard-feed-wrapper {
+    width: 100%;
+    background-color: #111;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 100, 0.2);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    padding: 10px 12px;
+    overflow: hidden;
+    border: 1px solid #333;
+    box-sizing: border-box;
+  }
+
+  .ard-feed-title {
+    font-size: 15px;
+    color: #ffeb3b;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    text-shadow: 0 0 5px #ffeb3b;
+  }
+
+  .ard-carousel {
+    height: 80px;
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .ard-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    transition: transform 0.3s ease-out;
+  }
+
+  .ard-list li {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+    white-space: normal;
+    min-width: 250px;
+  }
+
+  .ard-list li:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .ard-list img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  .ard-list span {
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+  }
+</style>
+
+<script>
+  const feedUrl = 'https://www.idcrypt.xyz/feeds/posts/default/-/ARD?alt=json&max-results=10';
+  const listEl = document.getElementById('ard-list');
+  const colors = ['#ffffff', '#ffff66', '#00ff88'];
+  let animId;
+  let scrollPos = 0;
+  let scrollSpeed = 0.4;
+
+  async function fetchFeed() {
+    try {
+      const res = await fetch(feedUrl);
+      const data = await res.json();
+      const entries = data.feed.entry || [];
+
+      entries.forEach((entry, index) => {
+        const title = entry.title.$t;
+        const media = entry['media$thumbnail'] ? entry['media$thumbnail'].url : '';
+        const link = entry.link.find(l => l.rel === 'alternate').href;
+
+        const li = document.createElement('li');
+        const textColor = colors[index % colors.length];
+
+        li.innerHTML = `
+          <img src="${media}" alt="${title}">
+          <span style="color: ${textColor};">${title}</span>
+        `;
+        li.onclick = () => window.open(link, '_blank');
+
+        listEl.appendChild(li);
+      });
+
+      startAutoScroll();
+
+    } catch (e) {
+      console.error('Gagal memuat feed ARD:', e);
+    }
+  }
+
+  function startAutoScroll() {
+    const containerWidth = listEl.parentElement.clientWidth;
+    const contentWidth = listEl.scrollWidth;
+
+    if (contentWidth <= containerWidth) return;
+
+    function step() {
+      scrollPos += scrollSpeed;
+      if (scrollPos >= contentWidth - containerWidth) scrollPos = 0;
+      listEl.style.transform = `translateX(${-scrollPos}px)`;
+      animId = requestAnimationFrame(step);
+    }
+
+    listEl.parentElement.onmouseenter = () => cancelAnimationFrame(animId);
+    listEl.parentElement.onmouseleave = () => {
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+  }
+
+  fetchFeed();
+</script>
