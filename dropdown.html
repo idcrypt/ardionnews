@@ -1,0 +1,430 @@
+<style>
+  :root {
+    color-scheme: dark;
+  }
+
+  .navbar-toggle {
+    display: none;
+    background-color: #0f172a;
+    color: #0ff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    border: 2px solid #0ff;
+    text-shadow: 0 0 10px #0ff;
+    margin-bottom: 10px;
+  }
+
+  .navbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-button {
+    background-color: #1e293b;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .dropdown-button:nth-child(1) { background: linear-gradient(to right, #ef4444, #f97316); }
+  .dropdown-button:nth-child(2) { background: linear-gradient(to right, #10b981, #3b82f6); }
+  .dropdown-button:nth-child(3) { background: linear-gradient(to right, #8b5cf6, #ec4899); }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #0f172a;
+    min-width: 220px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+    z-index: 99;
+    border-radius: 8px;
+  }
+
+  .dropdown-content a {
+    color: #f8fafc;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #1e293b;
+    color: #22d3ee;
+  }
+
+  .dropdown-submenu {
+    position: relative;
+  }
+
+  .dropdown-submenu > a::after {
+    content: ">>";
+    float: right;
+    font-size: 12px;
+    margin-left: 5px;
+  }
+
+  .dropdown-submenu-content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: #0f172a;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+    border-radius: 8px;
+    z-index: 100;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown-submenu:hover .dropdown-submenu-content {
+    display: block;
+  }
+
+  .exclusive-tab {
+    background-color: #0f0f0f;
+    color: #0ff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid #0ff;
+    border-radius: 12px;
+    text-shadow: 0 0 8px #0ff;
+    cursor: pointer;
+    animation: neonPulse 1.5s infinite alternate;
+  }
+
+  .exclusive-tab:hover {
+    color: #f00;
+    border-color: #f00;
+    text-shadow: 0 0 8px #f00;
+    box-shadow: 0 0 20px #f00, 0 0 40px #f00;
+  }
+
+  @keyframes neonPulse {
+    from {
+      box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    }
+    to {
+      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+  }
+
+  /* MOBILE RESPONSIVE */
+  @media screen and (max-width: 900px) {
+    .navbar-toggle {
+      display: block;
+    }
+
+    .navbar {
+      display: none;
+      flex-direction: column;
+      background: #0f172a;
+      padding: 10px;
+      border-radius: 10px;
+      width: 100%;
+    }
+
+    .navbar.show {
+      display: flex;
+    }
+
+    .dropdown-content,
+    .dropdown-submenu-content {
+      position: relative;
+      box-shadow: none;
+      width: 100%;
+    }
+
+    .dropdown-submenu > a::after {
+      content: "V";
+      float: right;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    .dropdown-button,
+    .exclusive-tab {
+      width: 100%;
+      text-align: left;
+    }
+
+    .exclusive-tab {
+      text-align: center;
+    }
+  }
+</style>
+
+
+<div class="navbar-toggle" onclick="toggleNavbar()">☰ MENU</div>
+<div class="navbar">
+  <!-- News Tab -->
+  <div class="dropdown">
+    <button class="dropdown-button">News</button>
+    <div class="dropdown-content">
+      <div class="dropdown-submenu">
+        <a href="#">₿itcoin 🐜</a>
+        <div class="dropdown-submenu-content">
+<a href="https://idcrypt.blogspot.com/search/label/bitcoin" target="_blank">₿itcoin News</a>
+<a href="https://idcrypt.blogspot.com/p/bitcoin-btc.html" target="_blank">w₿itcoin Chart</a>
+<a href="https://idcrypt.blogspot.com/p/satoshi-wallet.html" target="_blank">Satoshi Genesis ₿itcoin Chart</a>
+<a href="https://idcrypt.blogspot.com/p/btc-binance-allert.html" target="_blank">BTC BINANCE Allert</a>
+<a href="https://idcrypt.blogspot.com/p/btc-bybitallert.html" target="_blank">BITCOIN BYBIT Allert</a>
+<a href="https://idcrypt.blogspot.com/p/bitcoin-gateio-allert.html" target="_blank">BITCOIN GATE.IO Allert</a>
+<a href="https://idcrypt.blogspot.com/p/btc-okx-allert.html" target="_blank">BITCOIN OKX Allert</a>
+   </div>
+  </div>
+
+      <div class="dropdown-submenu">
+        <a href="#">S◎lana 🐜</a>
+        <div class="dropdown-submenu-content">
+<a href="https://idcrypt.blogspot.com/search/label/Solana" target="_blank">S◎lana News</a>
+<a href="https://idcrypt.blogspot.com/p/solana-sol.html" target="_blank">S◎lana Chart</a>
+   </div>
+  </div>
+
+       <div class="dropdown-submenu">
+        <a href="#">Ξthereum 🐜</a>
+        <div class="dropdown-submenu-content">
+<a href="https://idcrypt.blogspot.com/search/label/ethereum" target="_blank">Ξthereum News</a>
+<a href="https://idcrypt.blogspot.com/p/ethereum.html" target="_blank">Ξthereum Chart</a>
+   </div>
+  </div>
+
+      <!-- Submenu -->
+       <div class="dropdown-submenu">
+        <a href="#">Layer 1 🐜</a>
+        <div class="dropdown-submenu-content">
+          <a href="https://idcrypt.blogspot.com/search/label/BNB" target="_blank">🅱️N🅱️</a>
+          <a href="https://idcrypt.blogspot.com/search/label/pi" target="_blank">π Pi Network</a>
+          <a href="https://idcrypt.blogspot.com/search/label/XRP" target="_blank">⛌RP</a>
+          <a href="https://idcrypt.blogspot.com/search/label/ADA" target="_blank">C₳rdano</a>
+          <a href="https://idcrypt.blogspot.com/search/label/SUI" target="_blank">ȿUI</a>
+          <a href="https://idcrypt.blogspot.com/search/label/xlm" target="_blank">ȿtellar</a>
+          <a href="https://idcrypt.blogspot.com/search/label/avax" target="_blank">⟁valanche</a>
+          <a href="https://idcrypt.blogspot.com/search/label/tron" target="_blank">₮RON</a>
+          <a href="https://idcrypt.blogspot.com/search/label/berachain" target="_blank">Berachain</a>
+          <a href="https://idcrypt.blogspot.com/search/label/polkadot1" target="_blank">P●lkad●t</a>
+        </div>
+      </div>
+      <!-- Submenu -->
+       <div class="dropdown-submenu">
+        <a href="#">Layer 1 🐜🐜</a>
+        <div class="dropdown-submenu-content">
+          <a href="https://idcrypt.blogspot.com/search/label/litecoin" target="_blank">Łitecoin</a>
+          <a href="https://www.idcrypt.xyz/search/label/APT" target="_blank">APTOS</a>
+          <a href="https://idcrypt.blogspot.com/search/label/RVN" target="_blank">Raven Coin</a>
+          <a href="https://idcrypt.blogspot.com/search/label/tezos" target="_blank">Tezos</a>
+          <a href="https://idcrypt.blogspot.com/search/label/algorand" target="_blank">Algorand</a>
+          <a href="https://www.idcrypt.xyz/search/label/monero" target="_blank">Monero</a>
+          <a href="https://www.idcrypt.xyz/search/label/Polygon" target="_blank">Polygon</a>
+          <a href="https://www.idcrypt.xyz/search/label/HYPE" target="_blank">Hyperliquid</a>
+          <a href="https://www.idcrypt.xyz/search/label/ton" target="_blank">TON</a>
+        </div>
+      </div>
+
+      <!-- Submenu -->
+       <div class="dropdown-submenu">
+        <a href="#">Layer 2 🐜</a>
+        <div class="dropdown-submenu-content">
+          <a href="https://idcrypt.blogspot.com/search/label/optimism" target="_blank">∅pstimism</a>
+          <a href="https://idcrypt.blogspot.com/search/label/arbitrum" target="_blank">₳rbitrum</a>
+          <a href="https://idcrypt.blogspot.com/search/label/stx" target="_blank">$tack$</a>
+    </div>
+  </div>
+
+      <div class="dropdown-submenu">
+        <a href="#">Other Sector 🐜</a>
+        <div class="dropdown-submenu-content">
+      <a href="https://www.idcrypt.xyz/search/label/cbdc" target="_blank">CBDC</a>
+      <a href="https://idcrypt.blogspot.com/search/label/stable%20coin" target="_blank">$table Coin</a>
+      <a href="https://idcrypt.blogspot.com/search/label/meme" target="_blank">🐶Meme Coin</a>
+      <a href="https://www.idcrypt.xyz/search/label/RWA" target="_blank">Real World Assets</a>
+      <a href="https://idcrypt.blogspot.com/search/label/AI" target="_blank">🖥AI Sector</a>
+      <a href="https://idcrypt.blogspot.com/search/label/depin" target="_blank">📌DePin</a>
+      <a href="https://idcrypt.blogspot.com/search/label/Defi" target="_blank">🏛DeFi</a>
+      <a href="https://idcrypt.blogspot.com/search/label/signal" target="_blank">📡Market Signal</a>
+      <a href="https://idcrypt.blogspot.com/search/label/airdrop" target="_blank">💧Airdrop</a>
+</div>
+  </div>
+      <a href="https://www.idcrypt.xyz/search/label/stocks" target="_blank">STOCKS</a>
+      <a href="https://www.idcrypt.xyz/search/label/WEB3" target="_blank">Economics News</a>
+      <a href="https://www.idcrypt.xyz/search/label/learning" target="_blank">LEARNING</a>
+      <a href="https://www.idcrypt.xyz/search/label/antchain" target="_blank">AntChain</a>
+    </div>
+  </div>
+
+  <!-- Ecosystem Tab -->
+  <div class="dropdown">
+    <button class="dropdown-button">Ecosystem</button>
+    <div class="dropdown-content">
+      <a href="https://www.idcrypt.xyz/p/ardion-3d-web3-roadmap-body-margin-0.html" target="_blank">🐜 Progress</a>
+      <a href="https://idcrypt.blogspot.com/p/litepaper-ardion-ard.html" target="_blank">🐜 Litepaper</a>
+      <a href="https://idcrypt.blogspot.com/p/ardion-chart.html" target="_blank">🐜 Chart</a>
+       <div class="dropdown-submenu">
+        <a href="#">🐜 4 💊Pump.fun 🐜</a>
+        <div class="dropdown-submenu-content">
+      <a href="https://idcrypt.blogspot.com/search/label/pump" target="_blank">🐜 4 💊Pump.fun News</a>
+      <a href="https://forms.gle/Ypj7EnCHYgJvYMNm6" target="_blank">🐜 Submit 4 💊Pump.fun</a>
+   </div>
+  </div>
+       <div class="dropdown-submenu">
+        <a href="#">🐜 NFT 🐜</a>
+        <div class="dropdown-submenu-content">
+       <a href="https://solsea.io/a/681310948a3832c63fd6b26f" target="_blank">🐜 Ardion NFT</a>
+      <a href="https://idcrypt.blogspot.com/search/label/nft%20news" target="_blank">🐜 4 Ⓝ𝔽Ƭ News</a>
+    <a href="https://idcrypt.blogspot.com/p/nft-showcase-loading-data.html" target="_blank">🐜 Showcase Ⓝ𝔽Ƭ</a>
+<a href="https://forms.gle/4Jpe2DiSYLA48H8G8" target="_blank">🐜 Submit to Showcase Ⓝ𝔽Ƭ</a>
+<a href="https://forms.gle/QdL5xqpi9BYJvnQA9" target="_blank">🐜 Submit4 Ⓝ𝔽Ƭ News</a>
+    </div>
+  </div>
+   </div>
+  </div>
+  <!-- About Tab -->
+  <div class="dropdown">
+    <button class="dropdown-button">Ardion Game</button>
+    <div class="dropdown-content">
+      <a href="https://www.idcrypt.xyz/p/ardion-game-roadmap-body-font-family.html" target="_blank">🐜Game Roadmap</a>
+      <a href="https://www.idcrypt.xyz/p/ardion-game-protocol-awakening-body.html" target="_blank">🐜Game Test</a>
+    </div>
+  </div>
+  <a href="https://www.idcrypt.xyz/search/label/iranisrael" target="_blank" class="exclusive-tab">⚠ Iran vs Israel</a>
+
+
+</div>
+
+<script>
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown').forEach(d => {
+      d.classList.remove('active');
+      const content = d.querySelector('.dropdown-content');
+      if (content) content.classList.remove('slide-down');
+    });
+
+    document.querySelectorAll('.dropdown-submenu').forEach(s => {
+      s.classList.remove('active');
+      const submenu = s.querySelector('.dropdown-submenu-content');
+      if (submenu) submenu.classList.remove('slide-down');
+    });
+  }
+
+  document.querySelectorAll('.dropdown-button').forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      const dropdown = this.parentElement;
+      const content = dropdown.querySelector('.dropdown-content');
+      const isActive = dropdown.classList.contains('active');
+      closeAllDropdowns();
+      if (!isActive) {
+        dropdown.classList.add('active');
+        if (content && window.innerWidth <= 768) {
+          content.classList.add('slide-down');
+        }
+      }
+    });
+  });
+
+  document.querySelectorAll('.dropdown-submenu > a').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const submenu = this.parentElement;
+      const submenuContent = submenu.querySelector('.dropdown-submenu-content');
+      const isActive = submenu.classList.contains('active');
+
+      submenu.parentElement.querySelectorAll('.dropdown-submenu').forEach(s => {
+        s.classList.remove('active');
+        const sc = s.querySelector('.dropdown-submenu-content');
+        if (sc) sc.classList.remove('slide-down');
+      });
+
+      if (!isActive) {
+        submenu.classList.add('active');
+        if (submenuContent && window.innerWidth <= 768) {
+          submenuContent.classList.add('slide-down');
+        }
+      }
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.dropdown')) {
+      closeAllDropdowns();
+    }
+  });
+
+  function toggleNavbar() {
+    const navbar = document.querySelector('.navbar');
+    navbar.classList.toggle('show');
+  }
+
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown').forEach(d => {
+      d.classList.remove('active');
+      const content = d.querySelector('.dropdown-content');
+      if (content) content.classList.remove('slide-down');
+    });
+
+    document.querySelectorAll('.dropdown-submenu').forEach(s => {
+      s.classList.remove('active');
+      const submenu = s.querySelector('.dropdown-submenu-content');
+      if (submenu) submenu.classList.remove('slide-down');
+    });
+  }
+
+  document.querySelectorAll('.dropdown-button').forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      const dropdown = this.parentElement;
+      const content = dropdown.querySelector('.dropdown-content');
+      const isActive = dropdown.classList.contains('active');
+      closeAllDropdowns();
+      if (!isActive) {
+        dropdown.classList.add('active');
+        if (content && window.innerWidth <= 768) {
+          content.classList.add('slide-down');
+        }
+      }
+    });
+  });
+
+  document.querySelectorAll('.dropdown-submenu > a').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const submenu = this.parentElement;
+      const submenuContent = submenu.querySelector('.dropdown-submenu-content');
+      const isActive = submenu.classList.contains('active');
+
+      submenu.parentElement.querySelectorAll('.dropdown-submenu').forEach(s => {
+        s.classList.remove('active');
+        const sc = s.querySelector('.dropdown-submenu-content');
+        if (sc) sc.classList.remove('slide-down');
+      });
+
+      if (!isActive) {
+        submenu.classList.add('active');
+        if (submenuContent && window.innerWidth <= 768) {
+          submenuContent.classList.add('slide-down');
+        }
+      }
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.dropdown')) {
+      closeAllDropdowns();
+    }
+  });
+</script>
