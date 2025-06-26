@@ -1,9 +1,10 @@
 <!-- ARDION Transfer Feed -->
 <div class="ardion-feed-wrapper">
   <div class="ardion-feed-title">🐜 ARDION TRX</div>
-  <div id="ardion-carousel" class="ardion-carousel">
+  <div class="ardion-carousel">
     <div id="tx-scroll" class="ardion-scroll-content"></div>
   </div>
+  <div class="ardion-note">⚠️ Not live from Solscan. Updated occasionally.</div>
 </div>
 
 <style>
@@ -13,12 +14,13 @@
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
     font-family: 'Share Tech Mono', monospace;
-    padding: 12px 14px;
+    padding: 12px 14px 6px;
     overflow: hidden;
     border: 1px solid #00ffe7;
     box-sizing: border-box;
     max-width: 400px;
     margin: 20px auto;
+    position: relative;
   }
 
   .ardion-feed-title {
@@ -37,14 +39,23 @@
   }
 
   .ardion-scroll-content {
-    position: absolute;
-    top: 100%;
-    white-space: normal;
+    display: flex;
+    flex-direction: column;
+    animation: scrollLoop 320s linear infinite;
   }
 
-  @keyframes dynamicScroll {
-    from { top: 100%; }
-    to { top: -100%; }
+  @keyframes scrollLoop {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+
+  .ardion-note {
+    font-size: 10px;
+    color: yellow;
+    position: absolute;
+    bottom: 4px;
+    right: 10px;
+    opacity: 0.7;
   }
 </style>
 
@@ -52,45 +63,33 @@
   const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRPGFcCnNkveojT8tWZCPlOaNl5rBMqC-RlENmTKxVbVv39lHWYeMacuJxnvKTLxwo_-KwMUoauMwd6/pub?output=csv";
 
   async function loadTransactions() {
-    try {
-      const response = await fetch(csvUrl);
-      const csvText = await response.text();
-      const lines = csvText.trim().split("\n").slice(1); // Skip header
-      const container = document.getElementById('tx-scroll');
+    const response = await fetch(csvUrl);
+    const csvText = await response.text();
+    const lines = csvText.trim().split("\n").slice(1);
+    const baseHTML = lines.map(line => {
+      const parts = line.split(",");
+      const time = parts[2].replace("T", " ").split(".")[0];
+      const from = parts[4].slice(0, 10) + "...";
+      const to = parts[5].slice(0, 10) + "...";
+      const amount = Number(parts[6]).toLocaleString();
+      const usd = Number(parts[7]).toFixed(2);
 
-      const txs = lines.map(line => {
-        const parts = line.split(",");
-        return {
-          time: parts[2].replace("T", " ").split(".")[0],
-          from: parts[4].slice(0, 10) + "...",
-          to: parts[5].slice(0, 10) + "...",
-          amount: Number(parts[6]).toLocaleString(),
-          usd: Number(parts[7]).toFixed(2)
-        };
-      });
-
-      container.innerHTML = txs.map(tx => `
+      return `
         <div style="margin-bottom: 16px; color: #00ffe7;">
-          <div><strong>${tx.time}</strong></div>
-          <div>From: ${tx.from}</div>
-          <div>To: ${tx.to}</div>
-          <div>🐜 ${tx.amount} ARDION ($${tx.usd})</div>
+          <div><strong>${time}</strong></div>
+          <div>From: ${from}</div>
+          <div>To: ${to}</div>
+          <div>🐜 ${amount} ARDION ($${usd})</div>
         </div>
-      `).join('');
+      `;
+    }).join('');
 
-      requestAnimationFrame(() => {
-        const scrollHeight = container.scrollHeight;
-        const duration = Math.max(scrollHeight * 0.002, 5); // 🚀 SUPER FAST
-        container.style.animation = `dynamicScroll ${duration}s linear infinite`;
-      });
-    } catch (err) {
-      document.getElementById('tx-scroll').innerText = "⚠️ Failed to load data.";
-      console.error("Load error:", err);
-    }
+    // Duplikat konten agar scroll seamless
+    document.getElementById('tx-scroll').innerHTML = baseHTML + baseHTML;
   }
 
   loadTransactions();
 </script>
 
-<!-- Font neon -->
+<!-- Font -->
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
