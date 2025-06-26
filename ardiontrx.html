@@ -1,0 +1,96 @@
+<!-- ARDION Transfer Feed -->
+<div class="ardion-feed-wrapper">
+  <div class="ardion-feed-title">🐜 ARDION TRX</div>
+  <div id="ardion-carousel" class="ardion-carousel">
+    <div id="tx-scroll" class="ardion-scroll-content"></div>
+  </div>
+</div>
+
+<style>
+  .ardion-feed-wrapper {
+    width: 100%;
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    font-family: 'Share Tech Mono', monospace;
+    padding: 12px 14px;
+    overflow: hidden;
+    border: 1px solid #00ffe7;
+    box-sizing: border-box;
+    max-width: 400px;
+    margin: 20px auto;
+  }
+
+  .ardion-feed-title {
+    font-size: 15px;
+    color: #00ffff;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    text-shadow: 0 0 5px #00ffff;
+  }
+
+  .ardion-carousel {
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ardion-scroll-content {
+    position: absolute;
+    top: 100%;
+    white-space: normal;
+  }
+
+  @keyframes dynamicScroll {
+    from { top: 100%; }
+    to { top: -100%; }
+  }
+</style>
+
+<script>
+  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRPGFcCnNkveojT8tWZCPlOaNl5rBMqC-RlENmTKxVbVv39lHWYeMacuJxnvKTLxwo_-KwMUoauMwd6/pub?output=csv";
+
+  async function loadTransactions() {
+    try {
+      const response = await fetch(csvUrl);
+      const csvText = await response.text();
+      const lines = csvText.trim().split("\n").slice(1); // Skip header
+      const container = document.getElementById('tx-scroll');
+
+      const txs = lines.map(line => {
+        const parts = line.split(",");
+        return {
+          time: parts[2].replace("T", " ").split(".")[0],
+          from: parts[4].slice(0, 10) + "...",
+          to: parts[5].slice(0, 10) + "...",
+          amount: Number(parts[6]).toLocaleString(),
+          usd: Number(parts[7]).toFixed(2)
+        };
+      });
+
+      container.innerHTML = txs.map(tx => `
+        <div style="margin-bottom: 16px; color: #00ffe7;">
+          <div><strong>${tx.time}</strong></div>
+          <div>From: ${tx.from}</div>
+          <div>To: ${tx.to}</div>
+          <div>🐜 ${tx.amount} ARDION ($${tx.usd})</div>
+        </div>
+      `).join('');
+
+      requestAnimationFrame(() => {
+        const scrollHeight = container.scrollHeight;
+        const duration = Math.max(scrollHeight * 0.002, 5); // 🚀 SUPER FAST
+        container.style.animation = `dynamicScroll ${duration}s linear infinite`;
+      });
+    } catch (err) {
+      document.getElementById('tx-scroll').innerText = "⚠️ Failed to load data.";
+      console.error("Load error:", err);
+    }
+  }
+
+  loadTransactions();
+</script>
+
+<!-- Font neon -->
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
