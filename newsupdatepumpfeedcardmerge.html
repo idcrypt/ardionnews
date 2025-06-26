@@ -1,0 +1,334 @@
+<style>
+  .widget-wrapper {
+    font-family: 'Segoe UI', sans-serif;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 15px;
+    background: #111;
+    color: #fff;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  .widget-wrapper h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    color: #fff;
+  }
+
+  /* News Update */
+  #berita-terbaru ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #berita-terbaru li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed #666;
+    padding-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  #berita-terbaru img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+    flex-shrink: 0;
+  }
+
+  #berita-terbaru a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    flex: 1 1 auto;
+    font-size: 0.95rem;
+  }
+
+  #berita-terbaru a:hover {
+    color: #3498db;
+  }
+
+  #loadMoreBtn {
+    display: block;
+    margin: 10px auto;
+    padding: 8px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+
+  #loadMoreBtn:hover {
+    background-color: #2980b9;
+  }
+
+  /* Related News as Horizontal Cards */
+  #related-carousel-wrapper {
+    overflow-x: auto;
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .related-slide {
+    flex: 0 0 auto;
+    width: 180px;
+    border-radius: 10px;
+    background: #1e1e1e;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+
+  .related-slide img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+  }
+
+  .related-caption {
+    padding: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ccc;
+    text-align: center;
+  }
+
+  /* Pump Feed Scroll Up */
+  #pump-carousel {
+    overflow: hidden;
+    border: 1px solid #444;
+    padding: 10px;
+    background-color: #111;
+    max-height: 200px;
+    position: relative;
+  }
+
+  #pump-wrapper {
+    position: relative;
+    will-change: transform;
+  }
+
+  #pump-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #pump-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+
+  #pump-list img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 10px;
+  }
+
+  #pump-list span {
+    font-size: 14px;
+    color: cyan;
+    flex: 1;
+    word-wrap: break-word;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #berita-terbaru li {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #berita-terbaru img {
+      margin-bottom: 8px;
+    }
+
+    .related-slide {
+      width: 160px;
+      scroll-snap-align: start;
+    }
+  }
+</style>
+
+<div class="widget-wrapper">
+  <h3>News Update</h3>
+  <div id="berita-terbaru">
+    <ul id="feed-list"></ul>
+    <button id="loadMoreBtn">Load More</button>
+  </div>
+
+  <h3>Related News</h3>
+  <div id="related-carousel-wrapper"></div>
+
+  <h3>🔥 Pump Feed</h3>
+  <div id="pump-carousel">
+    <div id="pump-wrapper">
+      <ul id="pump-list"><li>Loading pump news...</li></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  // === Load News Update ===
+  let startIndex = 1;
+  const maxResults = 5;
+
+  function loadPosts() {
+    fetch(`https://www.idcrypt.xyz/feeds/posts/default?alt=json&start-index=${startIndex}&max-results=${maxResults}`)
+      .then(res => res.json())
+      .then(data => {
+        const feedList = document.getElementById("feed-list");
+        const entries = data.feed.entry || [];
+        if (entries.length === 0) {
+          document.getElementById("loadMoreBtn").style.display = "none";
+          return;
+        }
+
+        entries.forEach(entry => {
+          const title = entry.title.$t;
+          const link = entry.link.find(l => l.rel === "alternate").href;
+          let thumbnail = "https://via.placeholder.com/80x60?text=No+Image";
+          if (entry.media$thumbnail) {
+            thumbnail = entry.media$thumbnail.url;
+          } else if (entry.content.$t.includes("<img")) {
+            const match = entry.content.$t.match(/<img.*?src=\"(.*?)\"/);
+            if (match && match[1]) thumbnail = match[1];
+          }
+
+          const li = document.createElement("li");
+          li.innerHTML = `<img src="${thumbnail}" alt="thumb"><a href="${link}" target="_blank">${title}</a>`;
+          feedList.appendChild(li);
+        });
+
+        startIndex += maxResults;
+      })
+      .catch(err => console.error("News fetch error", err));
+  }
+
+  document.getElementById("loadMoreBtn").onclick = loadPosts;
+  loadPosts();
+
+  // === Load Related Posts ===
+  const relContainer = document.getElementById("related-carousel-wrapper");
+  const currentURL = window.location.href.split("?")[0];
+  const labelLinks = document.querySelectorAll('.post-labels a');
+  const labels = Array.from(labelLinks).map(a => a.textContent.trim());
+
+  if (labels.length > 0) {
+    Promise.all(labels.map(label =>
+      fetch(`https://www.idcrypt.xyz/feeds/posts/default/-/${encodeURIComponent(label)}?alt=json&max-results=5`)
+        .then(res => res.json())
+    )).then(responses => {
+      relContainer.innerHTML = '';
+      const linksSet = new Set();
+      responses.forEach(data => {
+        const entries = data.feed.entry || [];
+        entries.forEach(entry => {
+          const link = entry.link.find(l => l.rel === "alternate").href;
+          if (!linksSet.has(link) && link !== currentURL) {
+            linksSet.add(link);
+            const title = entry.title.$t;
+            let imgSrc = "https://via.placeholder.com/80x60?text=No+Image";
+            if (entry.content.$t.includes("<img")) {
+              const match = entry.content.$t.match(/<img.*?src=\"(.*?)\"/);
+              if (match && match[1]) imgSrc = match[1];
+            }
+
+            const card = document.createElement("div");
+            card.className = "related-slide";
+            card.innerHTML = `
+              <a href="${link}" target="_blank">
+                <img src="${imgSrc}" alt="img">
+                <div class="related-caption">${title}</div>
+              </a>`;
+            relContainer.appendChild(card);
+          }
+        });
+      });
+    });
+  }
+
+  // === Load Pump Posts ===
+  fetch('https://www.idcrypt.xyz/feeds/posts/default/-/pump?alt=json&max-results=10')
+    .then(res => res.json())
+    .then(data => {
+      const entries = data.feed.entry || [];
+      const list = document.getElementById("pump-list");
+      list.innerHTML = '';
+
+      entries.forEach(entry => {
+        const title = entry.title.$t;
+        const link = entry.link.find(l => l.rel === "alternate").href;
+        let thumbnail = "https://via.placeholder.com/80x60?text=Pump";
+        if (entry.media$thumbnail) {
+          thumbnail = entry.media$thumbnail.url;
+        }
+
+        const li = document.createElement("li");
+        li.innerHTML = `<img src="${thumbnail}" alt="img"><span onclick="window.open('${link}', '_blank')">${title}</span>`;
+        list.appendChild(li);
+      });
+
+      setTimeout(() => {
+        if (document.querySelector("#pump-list li")) {
+          startPumpScroll();
+        }
+      }, 100);
+    })
+    .catch(err => console.error("Pump error", err));
+
+  // === Scroll Animation ===
+  function startPumpScroll() {
+    const wrapper = document.getElementById("pump-wrapper");
+    const contentHeight = wrapper.scrollHeight;
+    const containerHeight = document.getElementById("pump-carousel").clientHeight;
+
+    if (contentHeight <= containerHeight) return;
+
+    let scrollY = 0;
+    let animationId;
+
+    function step() {
+      scrollY += 0.5;
+      if (scrollY >= contentHeight - containerHeight) {
+        scrollY = 0;
+      }
+      wrapper.style.transform = `translateY(-${scrollY}px)`;
+      animationId = requestAnimationFrame(step);
+    }
+
+    function pauseScroll() {
+      cancelAnimationFrame(animationId);
+    }
+
+    function resumeScroll() {
+      animationId = requestAnimationFrame(step);
+    }
+
+    const container = document.getElementById("pump-carousel");
+    container.addEventListener("mouseenter", pauseScroll);
+    container.addEventListener("mouseleave", resumeScroll);
+    container.addEventListener("touchstart", pauseScroll);
+    container.addEventListener("touchend", resumeScroll);
+
+    animationId = requestAnimationFrame(step);
+  }
+</script>
+
+
+
