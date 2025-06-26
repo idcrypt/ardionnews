@@ -1,0 +1,67 @@
+  <style>
+    .ardion-flow {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      text-align: center;
+      font-size: 16px;
+      gap: 20px;
+    }
+
+    .ardion-flow-icon {
+      font-size: 40px;
+    }
+
+    .flow-arrow {
+      font-size: 24px;
+      animation: pulseArrow 1.5s infinite;
+    }
+
+    @keyframes pulseArrow {
+      0% { opacity: 0.2; transform: translateX(0); }
+      50% { opacity: 1; transform: translateX(5px); }
+      100% { opacity: 0.2; transform: translateX(0); }
+    }
+
+    .github-box {
+      background: #161b22;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: inline-block;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .developer-note {
+      font-size: 14px;
+      color: #aaa;
+      margin-top: 10px;
+    }
+  </style>
+
+  <h2 style="color: #00ffe7; font-size: 24px; margin-bottom: 20px; text-align: center;">ARDION GitHub Ecosystem Flow</h2>
+
+  <div class="ardion-flow">
+    <div>
+      <div class="ardion-flow-icon">🐙</div>
+      <div style="margin-top: 6px;">GitHub</div>
+    </div>
+    <div class="flow-arrow">➡️</div>
+    <div>
+      <div class="ardion-flow-icon">🌐</div>
+      <div style="margin-top: 6px;">ARDION Core Code</div>
+      <div class="github-box">gIT</div>
+    </div>
+    <div class="flow-arrow">➡️</div>
+    <div>
+      <div class="ardion-flow-icon">👩‍💻</div>
+      <div style="margin-top: 6px;">Web3 Developers</div>
+    </div>
+  </div>
+
+  <p class="developer-note" style="text-align: center;">
+    Free to fork, build, improve, and launch your own decentralized media portals.
+  </p>
+</div>
