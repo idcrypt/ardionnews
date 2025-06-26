@@ -1,1 +1,2 @@
 # ardionnews
+widget +hmtl
