@@ -1,0 +1,176 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  .idcrypt-footer-box {
+    font-family: 'Press Start 2P', monospace;
+    background: #121212;
+    color: #e0e0e0;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(255, 0, 255, 0.1);
+    text-align: left;
+    margin: 40px auto;
+    max-width: 100%;
+  }
+
+  .main-share-btn {
+    background-color: #4a148c;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: 'Press Start 2P', monospace;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    margin-bottom: 14px;
+  }
+
+  .share-icons {
+    display: none;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: #1f1f1f;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .share-icons a {
+    background: #2a2a2a;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .share-icons a:hover {
+    background: #444;
+  }
+
+  .pluang-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff3c6a, #7d00ff);
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 60, 106, 0.5), 0 0 20px rgba(125, 0, 255, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 11px;
+    font-family: 'Press Start 2P', monospace;
+    margin: 20px 0;
+  }
+
+  .pluang-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 60, 106, 0.8), 0 0 30px rgba(125, 0, 255, 0.6);
+  }
+
+  .author-box {
+    margin-top: 30px;
+    background-color: #1a1a1a;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 10px;
+    line-height: 1.6;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+
+  .author-box h3 {
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #00ffc4;
+  }
+
+  .author-box a {
+    text-decoration: none;
+    margin-right: 12px;
+    font-size: 10px;
+  }
+
+  .author-box a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="idcrypt-footer-box">
+  <button class="main-share-btn" onclick="toggleShareMenu(this)">🔗 Share</button>
+  <div class="share-icons" id="share-icons"></div>
+
+  <a class="pluang-button" href="https://pluang.onelink.me/jTjO/xtzwp03j" rel="noopener noreferrer" target="_blank">
+    Buy this stocks on PLUANG now
+  </a>
+
+<div style="background-color: #1a1a1a; color: #f2f2f2; padding: 20px; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 0 10px rgba(0,0,0,0.6); margin-top: 40px; display: flex; align-items: center;">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpLrZ3U1F3iiHT14gKSj6EEoWpscupmE_4Lnje-vaPePQt0oTZLT57_2qHRYrbQkGCbBvhUHKoXAPccJ_w7bTZR498b90qmADR4Ur2cqxpyQ3HHcVBnTWthNuKHQ2oYoRAXogfJ-z_-ghQeurgnU21PutnPKJOPSCxpWhcZnwsHOtZE5rRsHHkUBde-l0/s200/72271697_104071997678491_1483730129241767936_n.jpg" alt="Binkalogi Profile" style="width: 90px; height: 90px; border-radius: 50%; margin-right: 20px; border: 2px solid #00ffc4;">
+  
+  <div>
+    <h3 style="margin: 0 0 8px; font-size: 20px; color: #00ffc4;">Hariyanto a.k.a Binkalogi</h3>
+    <p style="margin: 0 0 12px; font-size: 15px; line-height: 1.6;">
+      <strong>Crypto Blogger, NFT Artist & Web3 Builder</strong><br>
+      Binkalogi shares sharp perspectives on crypto trading, NFTs, blockchain culture, and decentralized ecosystems. As the creator behind <strong>idcrypt.xyz</strong> and the <strong>ARDION</strong> token, he blends technical insights with creative vision to empower the crypto community.
+    </p>
+    <div style="margin-top: 10px;">
+      <a href="https://twitter.com/4rtbinka" target="_blank" style="margin-right: 12px; text-decoration: none; color: #1DA1F2;">
+        @4rtbinka
+      </a>
+      <a href="https://www.linkedin.com/in/hariyanto-s-sos-9a5b15336" target="_blank" style="text-decoration: none; color: #0077b5;">
+        🔗 LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleShareMenu(button) {
+    const shareBox = button.nextElementSibling;
+    shareBox.style.display = shareBox.style.display === "flex" ? "none" : "flex";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const shareBox = document.getElementById("share-icons");
+
+    const postTitleRaw = document.title || "Untitled";
+    const postTitleWithIcon = "🐜 " + postTitleRaw;
+    const postURL = window.location.href;
+
+    let contentText = "";
+    const article = document.querySelector('article') || document.querySelector('.post-body') || document.querySelector('.post-content');
+    if(article) {
+      const firstParagraph = article.querySelector('p');
+      if(firstParagraph) {
+        const words = firstParagraph.textContent.trim().split(/\s+/);
+        contentText = words.slice(0, 5).join(" ");
+      }
+    }
+    if(!contentText) contentText = "Discover insightful news and updates.";
+
+    const promoText = "\nRead more at idcrypt.xyz as part of the Ardion Token ecosystem. #ARD";
+    const shareText = encodeURIComponent(postTitleWithIcon + "\n" + contentText + promoText);
+    const encodedURL = encodeURIComponent(postURL);
+
+    const platforms = [
+      {name: "🔃", url: `https://twitter.com/intent/tweet?text=${shareText}&url=${encodedURL}`},
+      {name: "📘", url: `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`},
+      {name: "🔗", url: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedURL}&title=${encodeURIComponent(postTitleWithIcon)}&summary=${shareText}`},
+      {name: "📢", url: `https://t.me/share/url?url=${encodedURL}&text=${shareText}`},
+      {name: "📱", url: `https://api.whatsapp.com/send?text=${shareText}%20${encodedURL}`}
+    ];
+
+    platforms.forEach(p => {
+      const a = document.createElement("a");
+      a.href = p.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = p.name;
+      shareBox.appendChild(a);
+    });
+  });
+</script>
+
+
+
