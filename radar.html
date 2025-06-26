@@ -1,0 +1,99 @@
+<style>
+  .idf-radar-wrap {
+    background: #0a0e11;
+    border: 2px solid #00ffe7;
+    border-radius: 12px;
+    padding: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    max-width: 720px;
+    margin: 2rem auto;
+    color: #00ffe7;
+    box-shadow: 0 0 20px #00ffe722;
+  }
+
+  .idf-radar-title {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    color: #00ffe7;
+    text-shadow: 0 0 6px #00fff9aa;
+  }
+
+  .idf-radar {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: radial-gradient(circle at center, #00363a 0%, #000 100%);
+    border: 2px solid #00ffe7;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .idf-sweep {
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(to right, #00ffe7, transparent);
+    top: 50%;
+    left: 50%;
+    transform-origin: left center;
+    animation: sweep 4s linear infinite;
+  }
+
+  @keyframes sweep {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .idf-target {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #ff0000aa;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff0000aa;
+    animation: blinkTarget 1s infinite;
+  }
+
+  @keyframes blinkTarget {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* Example strike animation */
+  .idf-strike {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ff0000;
+    border-radius: 50%;
+    top: 70%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px #ff0000;
+    animation: pulseStrike 1.2s infinite;
+  }
+
+  @keyframes pulseStrike {
+    0% {
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.5);
+      opacity: 0;
+    }
+  }
+</style>
+
+<div class="idf-radar-wrap">
+  <div class="idf-radar-title">IDF Targeting Radar – June 21, 2025</div>
+  <div class="idf-radar">
+    <div class="idf-sweep"></div>
+    <div class="idf-target" style="top: 40%; left: 30%;"></div>
+    <div class="idf-target" style="top: 65%; left: 60%;"></div>
+    <div class="idf-strike"></div>
+  </div>
+</div>
+
+
