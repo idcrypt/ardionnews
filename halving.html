@@ -1,0 +1,42 @@
+<!-- Halving Countdown Widget -->
+<div id="halving-countdown" style="font-family:'Share Tech Mono', monospace; background:#0d1117; color:#fff; border:2px solid #333; border-radius:12px; padding:15px; max-width:400px; margin:20px auto; text-align:center; box-shadow:0 0 10px #444;">
+  <h3 style="margin-bottom:12px; color:#00ffe7; font-size:1.1em;">⏳ Crypto Halving Countdown</h3>
+  <div id="halvingCountdowns" style="font-size:1em;"></div>
+</div>
+
+<!-- Countdown Script -->
+<script>
+const halvings = [
+  { name: "Bitcoin", date: new Date("2028-04-20T00:00:00Z"), color: "#f7931a" },
+  { name: "Litecoin", date: new Date("2027-08-03T00:00:00Z"), color: "#bebebe" },
+  { name: "Bitcoin Cash", date: new Date("2028-03-29T00:00:00Z"), color: "#8dc351" },
+  { name: "Bitcoin SV", date: new Date("2028-04-20T00:00:00Z"), color: "#eab300" },
+  { name: "Zcash", date: new Date("2028-11-18T00:00:00Z"), color: "#f4b728" },
+  { name: "Vertcoin", date: new Date("2025-12-10T00:00:00Z"), color: "#3cb054" },
+  { name: "Ravencoin", date: new Date("2026-01-11T00:00:00Z"), color: "#384182" }
+];
+
+function updateCountdowns() {
+  const container = document.getElementById("halvingCountdowns");
+  const now = new Date().getTime();
+
+  container.innerHTML = halvings.map(h => {
+    const distance = h.date - now;
+
+    if (distance <= 0) return `<div style='margin-bottom:6px; color:${h.color};'><strong>${h.name}:</strong> 🎉 Done!</div>`;
+
+    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const h_ = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+    return `<div style='margin-bottom:6px; color:${h.color};'><strong>${h.name}:</strong> ${d}d ${h_}h ${m}m ${s}s</div>`;
+  }).join("");
+}
+
+updateCountdowns();
+setInterval(updateCountdowns, 1000);
+</script>
+
+<!-- Font for cyber look -->
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
